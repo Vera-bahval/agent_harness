@@ -1,0 +1,47 @@
+# STRUCTURE ONLY: sources and Dockerfiles will be implemented in CP1-03.
+# Runtime is not ready. Replace health endpoints with their implementations.
+services:
+  gateway:
+    build: ./services/gateway
+    environment:
+      CLIENT_TOKENS: ${CLIENT_TOKENS:-}
+      HARNESS_URL: http://harness:8000
+    ports: ["${GATEWAY_PORT:-8080}:8080"]
+    depends_on:
+      harness:
+        condition: service_healthy
+    healthcheck: &python-health
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+  harness:
+    build: ./services/harness
+    environment:
+      LLM_URL: http://llm-proxy:8000
+      SANDBOX_URL: http://sandbox-manager:8000
+      HARNESS_MAX_STEPS: ${HARNESS_MAX_STEPS:-20}
+    depends_on:
+      llm-proxy:
+        condition: service_healthy
+      sandbox-manager:
+        condition: service_healthy
+    healthcheck: *python-health
+  sandbox-manager:
+    build: ./services/sandbox-manager
+    environment:
+      SANDBOX_CPU: ${SANDBOX_CPU:-1}
+      SANDBOX_MEMORY: ${SANDBOX_MEMORY:-1g}
+      SANDBOX_PIDS: ${SANDBOX_PIDS:-256}
+      SANDBOX_DISK: ${SANDBOX_DISK:-2g}
+      SANDBOX_EXEC_TIMEOUT_S: ${SANDBOX_EXEC_TIMEOUT_S:-120}
+    # Docker access, sandbox image build, volumes and networks: CP1-04 / ADR-0002.
+    healthcheck: *python-health
+  llm-proxy:
+    build: ./services/llm-proxy
+    environment:
+      LLM_MODE: ${LLM_MODE:-replay}
+      LLM_PROVIDER_URL: ${LLM_PROVIDER_URL:-}
+      LLM_MODEL: ${LLM_MODEL:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+    healthcheck: *python-health

@@ -1,0 +1,25 @@
+# Local credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+# Local runtime and editor state
+.local/
+workdirs/
+results/local/
+.idea/
+.vscode/
+.DS_Store
+# Build outputs
+build/
+dist/
+*.egg-info/
