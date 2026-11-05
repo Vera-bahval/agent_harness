@@ -2,13 +2,13 @@
 
 Атомарные функции пары «харнес + LLM»: чтение, поиск, создание, редактирование, использование инструмента, генерация кода, рассуждение, синтез. Инфраструктура (сессии, сеть, сбои, синхронизация, изоляция) сюда не входит — она в `tests/infra/`.
 
-Курсовой набор — в [`catalog.yaml`](catalog.yaml) (8 БАФ × 3 задачи + 3 составные). Полностью оформленный пример — [`B1-read/B1.1-service-port`](B1-read/B1.1-service-port). Остальные задачи оформляются по тому же образцу.
+Курсовой набор — в [`catalog.yaml`](catalog.yaml) (8 БАФ × 3 задачи + 3 составные). Исходный курсовой пример — [`B1-read/B1.1-service-port`](B1-read/B1.1-service-port). В CP1-08 оформлены простые Б2.1…Б5.1: [описание и проверки](../docs/baf-simple.md).
 
 ## Формат задачи
 
 ```
 baf/<БАФ>/<задача>/
-├── task.yaml    # id, baf, level, prompt (одно или несколько сообщений), timeout_s, answer_file
+├── task.yaml    # id, baf, level, messages (одно или несколько сообщений), timeout_s, answer_file
 ├── fixture/     # исходное содержимое workdir — копируется в чистую папку перед запуском
 └── check.py     # программный чекер: получает путь к итоговой папке, печатает JSON {"pass": bool, "reason": str}
 ```
@@ -26,4 +26,6 @@ baf/<БАФ>/<задача>/
 | smoke-БАФ | `level: simple`, по одной на БАФ | 1 | CI: «отработало, файл создан, ничего не сломалось» |
 | полный | все задачи курса + свои + составные | 3 | тесты на качество, сравнение пар |
 
-Результат прогона — `results/baf/<pair>/<timestamp>.jsonl`: `task_id, repeat, pass, reason, tokens_in, tokens_out, seconds, outcome`.
+Результат прогона — `results/baf/<pair>/<timestamp>-<suffix>/results.jsonl`: `task_id, repeat, pass, reason, tokens_in, tokens_out, seconds, outcome`.
+
+Раннер CP1-07 реализован: [команды, алгоритм и ограничения](runner/README.md). Добавлены все 15 задач Б1–Б5; [полное описание](../docs/baf-cp1.md).

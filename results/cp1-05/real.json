@@ -1,0 +1,24 @@
+{
+  "run_id": "56ad6ffbc3a544a2bc23b2713945a56e",
+  "trace_id": "d1c8d7c3038845ac9562d0e5db68eaa5",
+  "session_id": "6ed35062014a4888bc42fc0813a2f93f",
+  "pair_id": "first-real-pair",
+  "state": "terminal",
+  "result": {
+    "status": "failed",
+    "answer": "",
+    "error": {
+      "class": "model_error",
+      "code": "provider_rate_limit"
+    },
+    "usage": {
+      "tokens_in": null,
+      "tokens_out": null
+    },
+    "model": null,
+    "mode": "real",
+    "artifact_available": false,
+    "cleanup": "released",
+    "seconds": 2.295498
+  }
+}

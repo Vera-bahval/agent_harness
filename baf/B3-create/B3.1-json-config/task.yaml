@@ -1,0 +1,7 @@
+id: B3.1
+baf: B3
+level: simple
+messages:
+- Создай config.json по спецификации spec.md.
+answer_file: config.json
+timeout_s: 180

@@ -1,0 +1,1 @@
+Version 1.2 remains the reference for compatibility tests.

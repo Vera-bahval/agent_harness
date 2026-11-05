@@ -1,0 +1,8 @@
+id: B3.2
+baf: B3
+level: medium
+messages:
+- Создай report.csv из таблицы в task.md, отсортируй строки по возрастанию даты. Формат
+  и столбцы указаны в task.md.
+answer_file: report.csv
+timeout_s: 180

@@ -1,0 +1,73 @@
+{
+  "prompt_contains": "порт",
+  "turns": [
+    {
+      "reply": {
+        "role": "assistant",
+        "content": null,
+        "tool_calls": [
+          {
+            "id": "read_config",
+            "type": "function",
+            "function": {
+              "name": "ReadFile",
+              "arguments": "{\"path\": \"config/app.yaml\"}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "expect": {
+        "call_id": "read_config",
+        "status": "success",
+        "text_contains": "port: 8137"
+      },
+      "reply": {
+        "role": "assistant",
+        "content": null,
+        "tool_calls": [
+          {
+            "id": "write_answer",
+            "type": "function",
+            "function": {
+              "name": "WriteFile",
+              "arguments": "{\"path\": \"answer.txt\", \"content\": \"8137\"}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "expect": {
+        "call_id": "write_answer",
+        "status": "success"
+      },
+      "reply": {
+        "role": "assistant",
+        "content": null,
+        "tool_calls": [
+          {
+            "id": "verify_answer",
+            "type": "function",
+            "function": {
+              "name": "RunCommand",
+              "arguments": "{\"argv\": [\"cat\", \"answer.txt\"], \"cwd\": \".\"}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "expect": {
+        "call_id": "verify_answer",
+        "status": "success",
+        "stdout": "8137"
+      },
+      "reply": {
+        "role": "assistant",
+        "content": "Готово: порт записан в answer.txt."
+      }
+    }
+  ]
+}

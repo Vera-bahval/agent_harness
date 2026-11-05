@@ -1,0 +1,26 @@
+{
+  "turns": [
+    {
+      "reply": {
+        "role": "assistant",
+        "content": null,
+        "tool_calls": [
+          {
+            "id": "sleep",
+            "type": "function",
+            "function": {
+              "name": "RunCommand",
+              "arguments": "{\"argv\": [\"sleep\", \"60\"], \"cwd\": \".\"}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "reply": {
+        "role": "assistant",
+        "content": "Готово: порт записан в answer.txt."
+      }
+    }
+  ]
+}

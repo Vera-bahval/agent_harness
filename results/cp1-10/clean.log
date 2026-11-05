@@ -1,0 +1,402 @@
+Isolated working-tree snapshot; no provider key; a separate Compose project and port.
+ Image cp1_clean_772f625786-harness Building 
+ Image cp1_clean_772f625786-sandbox-manager Building 
+ Image cp1_clean_772f625786-llm-proxy Building 
+ Image cp1_clean_772f625786-sandbox:cp1 Building 
+ Image cp1_clean_772f625786-gateway Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.54kB done
+#1 DONE 0.0s
+
+#2 [sandbox-image internal] load build definition from Dockerfile
+#2 transferring dockerfile:
+#2 transferring dockerfile: 350B done
+#2 DONE 0.3s
+
+#3 [gateway internal] load build definition from Dockerfile
+#3 transferring dockerfile: 560B done
+#3 DONE 0.3s
+
+#4 [llm-proxy internal] load build definition from Dockerfile
+#4 transferring dockerfile: 537B done
+#4 DONE 0.3s
+
+#5 [harness internal] load build definition from Dockerfile
+#5 transferring dockerfile: 644B done
+#5 DONE 0.3s
+
+#6 [sandbox-manager internal] load build definition from Dockerfile
+#6 transferring dockerfile: 1.62kB done
+#6 DONE 0.3s
+
+#7 [sandbox-manager internal] load metadata for docker.io/library/python:3.12.12-slim-bookworm
+#7 DONE 2.8s
+
+#8 [sandbox-manager internal] load .dockerignore
+#8 transferring context: 3.14kB done
+#8 DONE 0.0s
+
+#9 [harness internal] load build context
+#9 DONE 0.0s
+
+#10 [sandbox-image internal] load build context
+#10 DONE 0.0s
+
+#11 [harness 1/8] FROM docker.io/library/python:3.12.12-slim-bookworm@sha256:593bd06efe90efa80dc4eee3948be7c0fde4134606dd40d8dd8dbcade98e669c
+#11 resolve docker.io/library/python:3.12.12-slim-bookworm@sha256:593bd06efe90efa80dc4eee3948be7c0fde4134606dd40d8dd8dbcade98e669c 0.1s done
+#11 DONE 0.1s
+
+#12 [gateway internal] load build context
+#12 transferring context: 63.28kB 0.0s done
+#12 DONE 0.1s
+
+#13 [llm-proxy internal] load build context
+#13 transferring context: 68.97kB 0.0s done
+#13 DONE 0.1s
+
+#14 [gateway 3/8] COPY services/gateway/requirements.txt /app/requirements.txt
+#14 CACHED
+
+#15 [gateway 6/8] COPY services/gateway/ /app/services/gateway/
+#15 CACHED
+
+#16 [gateway 5/8] COPY services/common/ /app/services/common/
+#16 CACHED
+
+#17 [gateway 4/8] RUN pip install --no-cache-dir -r /app/requirements.txt
+#17 CACHED
+
+#18 [gateway 7/8] COPY contracts/client-server.v0.schema.json /app/contracts/client-server.v0.schema.json
+#18 CACHED
+
+#19 [llm-proxy 6/9] COPY services/llm-proxy/app.py /app/app.py
+#19 CACHED
+
+#20 [llm-proxy 5/9] COPY services/common/ /app/services/common/
+#20 CACHED
+
+#21 [llm-proxy 3/9] COPY services/llm-proxy/requirements.txt /app/requirements.txt
+#21 CACHED
+
+#22 [llm-proxy 4/9] RUN pip install --no-cache-dir -r /app/requirements.txt
+#22 CACHED
+
+#23 [llm-proxy 7/9] COPY services/llm-proxy/runtime/ /app/runtime/
+#23 CACHED
+
+#9 [harness internal] load build context
+#9 transferring context: 70.47kB done
+#9 DONE 0.1s
+
+#24 [sandbox-manager internal] load build context
+#24 transferring context: 191.09kB 0.1s done
+#24 DONE 0.2s
+
+#10 [sandbox-image internal] load build context
+#10 transferring context: 5.77kB done
+#10 DONE 0.1s
+
+#25 [gateway 8/8] COPY configs/pairs/ /app/configs/pairs/
+#25 DONE 0.1s
+
+#26 [llm-proxy 8/9] COPY configs/pairs/ /app/configs/pairs/
+#26 DONE 0.1s
+
+#27 [harness 2/8] WORKDIR /app
+#27 CACHED
+
+#28 [harness  4/10] RUN pip install --no-cache-dir -r /app/requirements.txt
+#28 CACHED
+
+#29 [harness  5/10] COPY services/common/ /app/services/common/
+#29 CACHED
+
+#30 [harness  6/10] COPY services/harness/app.py /app/app.py
+#30 CACHED
+
+#31 [harness  3/10] COPY services/harness/requirements.txt /app/requirements.txt
+#31 CACHED
+
+#32 [harness  7/10] COPY services/harness/runtime/ /app/runtime/
+#32 CACHED
+
+#33 [sandbox-image 2/6] COPY sandbox/tools.py /opt/agent_tools.py
+#33 CACHED
+
+#34 [sandbox-image 5/6] COPY sandbox/collect.py /opt/collect.py
+#34 CACHED
+
+#35 [sandbox-image 4/6] COPY sandbox/seed.py /opt/seed.py
+#35 CACHED
+
+#36 [sandbox-image 3/6] COPY sandbox/idle.py /opt/idle.py
+#36 CACHED
+
+#37 [sandbox-image 6/6] WORKDIR /work
+#37 CACHED
+
+#38 [sandbox-manager  4/23] RUN pip install --no-cache-dir -r /app/requirements.txt
+#38 CACHED
+
+#39 [sandbox-manager  5/23] COPY services/common/ /app/services/common/
+#39 CACHED
+
+#40 [sandbox-manager 22/23] COPY baf/B5-tools/B5.2-failing-tests/fixture/ /app/fixtures/B5_2/
+#40 CACHED
+
+#41 [sandbox-manager 16/23] COPY baf/B2-search/B2.2-env-readers/fixture/ /app/fixtures/B2_2/
+#41 CACHED
+
+#42 [sandbox-manager 17/23] COPY baf/B2-search/B2.3-timezone-parser/fixture/ /app/fixtures/B2_3/
+#42 CACHED
+
+#43 [sandbox-manager 10/23] COPY baf/B2-search/B2.1-find-function/fixture/ /app/fixtures/B2_1/
+#43 CACHED
+
+#44 [sandbox-manager 15/23] COPY baf/B1-read/B1.3-missing-penalty/fixture/ /app/fixtures/B1_3/
+#44 CACHED
+
+#45 [sandbox-manager 21/23] COPY baf/B4-edit/B4.3-cp1251-price/fixture/ /app/fixtures/B4_3/
+#45 CACHED
+
+#46 [sandbox-manager 14/23] COPY baf/B1-read/B1.2-payment-term/fixture/ /app/fixtures/B1_2/
+#46 CACHED
+
+#47 [sandbox-manager  9/23] COPY baf/B1-read/B1.1-service-port/fixture/ /app/fixtures/B1_1/
+#47 CACHED
+
+#48 [sandbox-manager  7/23] COPY services/sandbox-manager/runtime/ /app/runtime/
+#48 CACHED
+
+#49 [sandbox-manager 12/23] COPY baf/B4-edit/B4.1-install-version/fixture/ /app/fixtures/B4_1/
+#49 CACHED
+
+#50 [sandbox-manager 11/23] COPY baf/B3-create/B3.1-json-config/fixture/ /app/fixtures/B3_1/
+#50 CACHED
+
+#51 [sandbox-manager 18/23] COPY baf/B3-create/B3.2-sorted-report/fixture/ /app/fixtures/B3_2/
+#51 CACHED
+
+#52 [sandbox-manager  3/23] COPY services/sandbox-manager/requirements.txt /app/requirements.txt
+#52 CACHED
+
+#53 [sandbox-manager 13/23] COPY baf/B5-tools/B5.1-median/fixture/ /app/fixtures/B5_1/
+#53 CACHED
+
+#54 [sandbox-manager 20/23] COPY baf/B4-edit/B4.2-rename-function/fixture/ /app/fixtures/B4_2/
+#54 CACHED
+
+#27 [sandbox-manager 2/8] WORKDIR /app
+#27 CACHED
+
+#55 [sandbox-manager 19/23] COPY baf/B3-create/B3.3-yaml-strings/fixture/ /app/fixtures/B3_3/
+#55 CACHED
+
+#56 [sandbox-manager  6/23] COPY services/sandbox-manager/app.py /app/app.py
+#56 CACHED
+
+#57 [sandbox-manager  8/23] COPY contracts/harness-sandbox.v0.schema.json /app/contracts/harness-sandbox.v0.schema.json
+#57 CACHED
+
+#58 [harness  8/10] COPY configs/pairs/ /app/configs/pairs/
+#58 DONE 0.1s
+
+#59 [sandbox-manager 23/23] COPY baf/B5-tools/B5.3-build-exit/fixture/ /app/fixtures/B5_3/
+#59 CACHED
+
+#60 [llm-proxy 9/9] COPY tests/fixtures/llm/ /app/replays/
+#60 DONE 0.1s
+
+#61 [sandbox-manager] exporting to image
+#61 exporting layers 0.0s done
+#61 ...
+
+#62 [harness  9/10] COPY contracts/harness-sandbox.v0.schema.json /app/contracts/harness-sandbox.v0.schema.json
+#62 DONE 0.1s
+
+#61 [sandbox-manager] exporting to image
+#61 exporting manifest sha256:f48e6ad8b5f83c9822989c4b7c4271de45a218669a5e32691b17d980a89fa530 0.0s done
+#61 exporting config sha256:1634d023b791a0d0346f644a15a638572c9a47a47bba2bd3e023e0214764613c 0.0s done
+#61 exporting attestation manifest sha256:7f1143b50b25900962373d485810b46abb7bd17243cd67a93f64fc8b839406ce 0.1s done
+#61 exporting manifest list sha256:4b776a4485076058730b6dfb1754055e807423e6babf455c20735ec213ac0265
+#61 ...
+
+#63 [sandbox-image] exporting to image
+#63 exporting layers done
+#63 exporting manifest sha256:b360bee3588ccc1ca3eefdbd07bb95e9b1e4e2203ccba28c9710d90eb31134bb 0.0s done
+#63 exporting config sha256:9513415867c6a7f31dd0012b5bdebe132229a2dd1ca2495be13daf3bf97ee6d7 0.0s done
+#63 exporting attestation manifest sha256:fc3ae3bcb4a0f8b39996d6a28f2271b4ca7fa779ccfa43574f4676149788bbd4 0.0s done
+#63 exporting manifest list sha256:c038234c6e4ffb4b6d1416d13aa304067ff66ccba60192bb3571f35d7219186d 0.0s done
+#63 naming to docker.io/library/cp1_clean_772f625786-sandbox:cp1 0.0s done
+#63 unpacking to docker.io/library/cp1_clean_772f625786-sandbox:cp1 0.0s done
+#63 DONE 0.2s
+
+#61 [sandbox-manager] exporting to image
+#61 exporting manifest list sha256:4b776a4485076058730b6dfb1754055e807423e6babf455c20735ec213ac0265 0.0s done
+#61 naming to docker.io/library/cp1_clean_772f625786-sandbox-manager:latest 0.0s done
+#61 unpacking to docker.io/library/cp1_clean_772f625786-sandbox-manager:latest 0.0s done
+#61 DONE 0.3s
+
+#64 [gateway] exporting to image
+#64 exporting layers 0.1s done
+#64 exporting manifest sha256:d883d7868d19c21e587faa4533314821f08580402d241b079822806a0c6a6c0c 0.0s done
+#64 exporting config sha256:0d97d01e098766c35ece17e9bb966cb66dd6aa40c7a21df1329a01d011537eee 0.0s done
+#64 exporting attestation manifest sha256:d1442f0a22112b2c9b108a9569935d3ac4a35fd036acb720a35f113ce3443e05 0.1s done
+#64 exporting manifest list sha256:048ad1c35acf7233f4284c5c95330ab6aed53e73e5411309c7221b49f28a6d91 0.0s done
+#64 naming to docker.io/library/cp1_clean_772f625786-gateway:latest done
+#64 unpacking to docker.io/library/cp1_clean_772f625786-gateway:latest 0.1s done
+#64 DONE 0.4s
+
+#65 [llm-proxy] exporting to image
+#65 exporting layers 0.2s done
+#65 exporting manifest sha256:409ce3e2d248995cd8a7c9d3991fc4b6c3f33ece176993db82d0d1aba495777d 0.0s done
+#65 exporting config sha256:65749c8aed2bc3e93b5f1145e8194d8410016f096aada738f09d6ae335f18b52 0.0s done
+#65 exporting attestation manifest sha256:d639205528629750d23860d425b73e5428d7ccd2b95ee37ef01802acaa55d53a 0.0s done
+#65 exporting manifest list sha256:320b49ecc165f9aa54f9e4a8b6965c0f63cefdc8d8964d5d798ec6624867527f
+#65 ...
+
+#66 [harness 10/10] RUN mkdir -p /app/results && chown 10001:10001 /app/results
+#66 DONE 0.3s
+
+#67 [sandbox-image] resolving provenance for metadata file
+#67 DONE 0.0s
+
+#65 [llm-proxy] exporting to image
+#65 exporting manifest list sha256:320b49ecc165f9aa54f9e4a8b6965c0f63cefdc8d8964d5d798ec6624867527f 0.0s done
+#65 naming to docker.io/library/cp1_clean_772f625786-llm-proxy:latest 0.0s done
+#65 unpacking to docker.io/library/cp1_clean_772f625786-llm-proxy:latest 0.1s done
+#65 DONE 0.5s
+
+#68 [harness] exporting to image
+#68 exporting layers 0.2s done
+#68 exporting manifest sha256:7bd44705477461e2d5dcdf5c458400f310b53b4cdf76eae9416baceb2e1ed6cb 0.0s done
+#68 exporting config sha256:b6a14b4f37b20e99c495c2eac561d1e4f439d185373223bd8de5ae2608800f7a done
+#68 exporting attestation manifest sha256:6f382b1d212a27d53041a6e3fb777de736be5daaad5e0d9951366145f6b313b3
+#68 exporting attestation manifest sha256:6f382b1d212a27d53041a6e3fb777de736be5daaad5e0d9951366145f6b313b3 0.0s done
+#68 exporting manifest list sha256:6f0c9bc9671c6e0d0211384bf0568397aa8054a8dbff25970763cf4e1196a6cf 0.0s done
+#68 naming to docker.io/library/cp1_clean_772f625786-harness:latest done
+#68 unpacking to docker.io/library/cp1_clean_772f625786-harness:latest 0.0s done
+#68 DONE 0.3s
+
+#69 [gateway] resolving provenance for metadata file
+#69 DONE 0.1s
+
+#70 [sandbox-manager] resolving provenance for metadata file
+#70 DONE 0.1s
+
+#71 [llm-proxy] resolving provenance for metadata file
+#71 DONE 0.0s
+
+#72 [harness] resolving provenance for metadata file
+#72 DONE 0.0s
+ Image cp1_clean_772f625786-harness Built 
+ Image cp1_clean_772f625786-gateway Built 
+ Image cp1_clean_772f625786-llm-proxy Built 
+ Image cp1_clean_772f625786-sandbox:cp1 Built 
+ Image cp1_clean_772f625786-sandbox-manager Built 
+ Network cp1_clean_772f625786_backend Creating 
+ Network cp1_clean_772f625786_backend Created 
+ Network cp1_clean_772f625786_frontend Creating 
+ Network cp1_clean_772f625786_frontend Created 
+ Network cp1_clean_772f625786_llm-egress Creating 
+ Network cp1_clean_772f625786_llm-egress Created 
+ Volume cp1_clean_772f625786_runtime-auth Creating 
+ Volume cp1_clean_772f625786_runtime-auth Created 
+ Volume cp1_clean_772f625786_harness-results Creating 
+ Volume cp1_clean_772f625786_harness-results Created 
+ Container cp1_clean_772f625786-llm-proxy-1 Creating 
+ Container cp1_clean_772f625786-sandbox-image-1 Creating 
+ Container cp1_clean_772f625786-sandbox-image-1 Created 
+ Container cp1_clean_772f625786-sandbox-manager-1 Creating 
+ Container cp1_clean_772f625786-llm-proxy-1 Created 
+ Container cp1_clean_772f625786-sandbox-manager-1 Created 
+ Container cp1_clean_772f625786-harness-1 Creating 
+ Container cp1_clean_772f625786-harness-1 Created 
+ Container cp1_clean_772f625786-gateway-1 Creating 
+ Container cp1_clean_772f625786-gateway-1 Created 
+ Container cp1_clean_772f625786-sandbox-image-1 Starting 
+ Container cp1_clean_772f625786-llm-proxy-1 Starting 
+ Container cp1_clean_772f625786-sandbox-image-1 Started 
+ Container cp1_clean_772f625786-sandbox-image-1 Waiting 
+ Container cp1_clean_772f625786-llm-proxy-1 Started 
+ Container cp1_clean_772f625786-sandbox-image-1 Exited 
+ Container cp1_clean_772f625786-sandbox-manager-1 Starting 
+ Container cp1_clean_772f625786-sandbox-manager-1 Started 
+ Container cp1_clean_772f625786-llm-proxy-1 Waiting 
+ Container cp1_clean_772f625786-sandbox-manager-1 Waiting 
+ Container cp1_clean_772f625786-llm-proxy-1 Healthy 
+ Container cp1_clean_772f625786-sandbox-manager-1 Healthy 
+ Container cp1_clean_772f625786-harness-1 Starting 
+ Container cp1_clean_772f625786-harness-1 Started 
+ Container cp1_clean_772f625786-harness-1 Waiting 
+ Container cp1_clean_772f625786-harness-1 Healthy 
+ Container cp1_clean_772f625786-gateway-1 Starting 
+ Container cp1_clean_772f625786-gateway-1 Started 
+ Container cp1_clean_772f625786-harness-1 Waiting 
+ Container cp1_clean_772f625786-sandbox-manager-1 Waiting 
+ Container cp1_clean_772f625786-llm-proxy-1 Waiting 
+ Container cp1_clean_772f625786-sandbox-image-1 Waiting 
+ Container cp1_clean_772f625786-gateway-1 Waiting 
+ Container cp1_clean_772f625786-llm-proxy-1 Healthy 
+ Container cp1_clean_772f625786-sandbox-manager-1 Healthy 
+ Container cp1_clean_772f625786-sandbox-image-1 Exited 
+ Container cp1_clean_772f625786-harness-1 Healthy 
+ Container cp1_clean_772f625786-gateway-1 Healthy 
+{"version": "v0", "type": "run.accepted", "request_id": "5b62e8be8b194747b82aa2469ec01dfa", "server_epoch": "cb38212025b74465a1c1379671882b24", "session_id": "3a0900d90b1f4477a72860592aac1d76", "run_id": "a9d675ef2f0e46af88ad9bdfadf1672c", "trace_id": "a4186339549345f095f86cfe0edd640e"}
+{"version": "v0", "type": "run.started", "server_epoch": "cb38212025b74465a1c1379671882b24", "session_id": "3a0900d90b1f4477a72860592aac1d76", "run_id": "a9d675ef2f0e46af88ad9bdfadf1672c", "trace_id": "a4186339549345f095f86cfe0edd640e", "event_id": 1}
+{"version": "v0", "type": "tool.started", "server_epoch": "cb38212025b74465a1c1379671882b24", "session_id": "3a0900d90b1f4477a72860592aac1d76", "run_id": "a9d675ef2f0e46af88ad9bdfadf1672c", "trace_id": "a4186339549345f095f86cfe0edd640e", "event_id": 2, "operation_id": "088e198990dd45999aee82686d3b5d8d", "name": "ReadFile"}
+{"version": "v0", "type": "tool.finished", "server_epoch": "cb38212025b74465a1c1379671882b24", "session_id": "3a0900d90b1f4477a72860592aac1d76", "run_id": "a9d675ef2f0e46af88ad9bdfadf1672c", "trace_id": "a4186339549345f095f86cfe0edd640e", "event_id": 3, "operation_id": "088e198990dd45999aee82686d3b5d8d", "status": "success"}
+{"version": "v0", "type": "tool.started", "server_epoch": "cb38212025b74465a1c1379671882b24", "session_id": "3a0900d90b1f4477a72860592aac1d76", "run_id": "a9d675ef2f0e46af88ad9bdfadf1672c", "trace_id": "a4186339549345f095f86cfe0edd640e", "event_id": 4, "operation_id": "eaf053fc5c8e404da0e18d44bdc9286f", "name": "WriteFile"}
+{"version": "v0", "type": "tool.finished", "server_epoch": "cb38212025b74465a1c1379671882b24", "session_id": "3a0900d90b1f4477a72860592aac1d76", "run_id": "a9d675ef2f0e46af88ad9bdfadf1672c", "trace_id": "a4186339549345f095f86cfe0edd640e", "event_id": 5, "operation_id": "eaf053fc5c8e404da0e18d44bdc9286f", "status": "success"}
+{"version": "v0", "type": "tool.started", "server_epoch": "cb38212025b74465a1c1379671882b24", "session_id": "3a0900d90b1f4477a72860592aac1d76", "run_id": "a9d675ef2f0e46af88ad9bdfadf1672c", "trace_id": "a4186339549345f095f86cfe0edd640e", "event_id": 6, "operation_id": "42e2839d4a9441ecb40788347c020d25", "name": "RunCommand"}
+{"version": "v0", "type": "tool.finished", "server_epoch": "cb38212025b74465a1c1379671882b24", "session_id": "3a0900d90b1f4477a72860592aac1d76", "run_id": "a9d675ef2f0e46af88ad9bdfadf1672c", "trace_id": "a4186339549345f095f86cfe0edd640e", "event_id": 7, "operation_id": "42e2839d4a9441ecb40788347c020d25", "status": "success"}
+{"version": "v0", "type": "run.result", "server_epoch": "cb38212025b74465a1c1379671882b24", "session_id": "3a0900d90b1f4477a72860592aac1d76", "run_id": "a9d675ef2f0e46af88ad9bdfadf1672c", "trace_id": "a4186339549345f095f86cfe0edd640e", "event_id": 8, "result": {"status": "completed", "answer": "Готово: порт записан в answer.txt.", "error": null, "usage": {"tokens_in": null, "tokens_out": null}, "model": "scripted-v0", "mode": "replay"}}
+{"status": "completed", "answer": "Готово: порт записан в answer.txt.", "error": null, "usage": {"tokens_in": null, "tokens_out": null}, "model": "scripted-v0", "mode": "replay"}
+Artifact saved: results/local/client-result.tar
+B1.1 repeat=1: passed (ok); cleanup=closed
+B1.2 repeat=1: passed (ok); cleanup=closed
+B1.3 repeat=1: passed (ok); cleanup=closed
+B2.1 repeat=1: passed (ok); cleanup=closed
+B2.2 repeat=1: passed (ok); cleanup=closed
+B2.3 repeat=1: passed (ok); cleanup=closed
+B3.1 repeat=1: passed (ok); cleanup=closed
+B3.2 repeat=1: passed (ok); cleanup=closed
+B3.3 repeat=1: passed (ok); cleanup=closed
+B4.1 repeat=1: passed (ok); cleanup=closed
+B4.2 repeat=1: passed (ok); cleanup=closed
+B4.3 repeat=1: passed (ok); cleanup=closed
+B5.1 repeat=1: passed (ok); cleanup=closed
+B5.2 repeat=1: passed (ok); cleanup=closed
+B5.3 repeat=1: passed (ok); cleanup=closed
+{"pair": "replay-cp1", "mode": "replay", "measurement": "smoke-all", "total": 15, "passed": 15, "outcomes": {"passed": 15}}
+Results: results/baf/replay-cp1/20261105T205423Z-976a85b5
+ Container cp1_clean_772f625786-gateway-1 Stopping 
+ Container cp1_clean_772f625786-gateway-1 Stopped 
+ Container cp1_clean_772f625786-gateway-1 Removing 
+ Container cp1_clean_772f625786-gateway-1 Removed 
+ Container cp1_clean_772f625786-harness-1 Stopping 
+ Container cp1_clean_772f625786-harness-1 Stopped 
+ Container cp1_clean_772f625786-harness-1 Removing 
+ Container cp1_clean_772f625786-harness-1 Removed 
+ Container cp1_clean_772f625786-sandbox-manager-1 Stopping 
+ Container cp1_clean_772f625786-llm-proxy-1 Stopping 
+ Container cp1_clean_772f625786-llm-proxy-1 Stopped 
+ Container cp1_clean_772f625786-llm-proxy-1 Removing 
+ Container cp1_clean_772f625786-llm-proxy-1 Removed 
+ Container cp1_clean_772f625786-sandbox-manager-1 Stopped 
+ Container cp1_clean_772f625786-sandbox-manager-1 Removing 
+ Container cp1_clean_772f625786-sandbox-manager-1 Removed 
+ Container cp1_clean_772f625786-sandbox-image-1 Stopping 
+ Container cp1_clean_772f625786-sandbox-image-1 Stopped 
+ Container cp1_clean_772f625786-sandbox-image-1 Removing 
+ Container cp1_clean_772f625786-sandbox-image-1 Removed 
+ Network cp1_clean_772f625786_llm-egress Removing 
+ Volume cp1_clean_772f625786_runtime-auth Removing 
+ Network cp1_clean_772f625786_backend Removing 
+ Volume cp1_clean_772f625786_harness-results Removing 
+ Network cp1_clean_772f625786_frontend Removing 
+ Volume cp1_clean_772f625786_runtime-auth Removed 
+ Volume cp1_clean_772f625786_harness-results Removed 
+ Network cp1_clean_772f625786_llm-egress Removed 
+ Network cp1_clean_772f625786_frontend Removed 
+ Network cp1_clean_772f625786_backend Removed 

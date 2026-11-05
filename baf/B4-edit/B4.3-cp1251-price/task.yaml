@@ -1,0 +1,8 @@
+id: B4.3
+baf: B4
+level: tricky
+messages:
+- Поменяй цену товара X на 990 в prices.csv. Сохрани исходную кодировку cp1251, переводы
+  строк CRLF и все остальные байты.
+answer_file: prices.csv
+timeout_s: 180

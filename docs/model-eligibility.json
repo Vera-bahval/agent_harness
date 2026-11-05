@@ -1,0 +1,19 @@
+{
+  "checked_at": "2026-11-05",
+  "index_version": "Artificial Analysis Intelligence Index v5.0.1",
+  "source": "https://artificialanalysis.ai/leaderboards/models?deprecation=all",
+  "baseline": {
+    "model": "DeepSeek V4.1 Flash 1017",
+    "reasoning": "max",
+    "index": 33
+  },
+  "candidate": {
+    "model": "gpt-6.1-sol",
+    "reasoning": "low",
+    "index": 35
+  },
+  "comparison": "35 >= 33",
+  "provider_docs": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+  "api": "responses",
+  "model_snapshot_note": "Official model page lists gpt-6.1-sol only; record provider-returned model per run."
+}

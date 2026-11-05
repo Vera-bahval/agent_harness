@@ -1,0 +1,15 @@
+{
+  "harness": "simple-v0",
+  "mode": "real",
+  "model": "$LLM_MODEL",
+  "max_steps": 20,
+  "timeout_s": 180,
+  "tool_timeout_s": 60,
+  "parameters": {
+    "max_completion_tokens": 2048,
+    "reasoning_effort": "none",
+    "parallel_tool_calls": false
+  },
+  "replay": null,
+  "id": "first-real-pair"
+}

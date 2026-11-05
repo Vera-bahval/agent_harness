@@ -1,0 +1,21 @@
+{
+  "run_id": "070b90b79dba4edb8762e9a18f8ed1eb",
+  "trace_id": "ce4c6b653b8244fba4c49b7d23123d4a",
+  "session_id": "816d1b3c98fe4c35a4ca196607cb3792",
+  "pair_id": "replay-b1",
+  "state": "terminal",
+  "result": {
+    "status": "completed",
+    "answer": "Готово: порт записан в answer.txt.",
+    "error": null,
+    "usage": {
+      "tokens_in": null,
+      "tokens_out": null
+    },
+    "model": "scripted-v0",
+    "mode": "replay",
+    "artifact_available": true,
+    "cleanup": "released",
+    "seconds": 1.189128
+  }
+}

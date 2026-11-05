@@ -1,26 +1,45 @@
-# STRUCTURE ONLY: sources and Dockerfiles will be implemented in CP1-03.
-# Runtime is not ready. Replace health endpoints with their implementations.
+# CP1-06: authenticated gateway, persistent sessions and SSE.
 services:
   gateway:
-    build: ./services/gateway
+    build:
+      context: .
+      dockerfile: services/gateway/Dockerfile
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [frontend, backend]
+    stop_grace_period: 45s
     environment:
       CLIENT_TOKENS: ${CLIENT_TOKENS:-}
       HARNESS_URL: http://harness:8000
-    ports: ["${GATEWAY_PORT:-8080}:8080"]
+    ports: ["127.0.0.1:${GATEWAY_PORT:-8080}:8000"]
     depends_on:
       harness:
         condition: service_healthy
     healthcheck: &python-health
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
-      interval: 10s
-      timeout: 3s
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=4)"]
+      interval: 5s
+      timeout: 5s
       retries: 5
+      start_period: 5s
   harness:
-    build: ./services/harness
+    build:
+      context: .
+      dockerfile: services/harness/Dockerfile
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [backend]
     environment:
       LLM_URL: http://llm-proxy:8000
       SANDBOX_URL: http://sandbox-manager:8000
-      HARNESS_MAX_STEPS: ${HARNESS_MAX_STEPS:-20}
+      SANDBOX_TOKEN_FILE: /run/runtime-auth/sandbox.token
+    volumes:
+      - runtime-auth:/run/runtime-auth:ro
+      - harness-results:/app/results
+    stop_grace_period: 45s
     depends_on:
       llm-proxy:
         condition: service_healthy
@@ -28,20 +47,63 @@ services:
         condition: service_healthy
     healthcheck: *python-health
   sandbox-manager:
-    build: ./services/sandbox-manager
+    build:
+      context: .
+      dockerfile: services/sandbox-manager/Dockerfile
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [backend]
     environment:
       SANDBOX_CPU: ${SANDBOX_CPU:-1}
-      SANDBOX_MEMORY: ${SANDBOX_MEMORY:-1g}
-      SANDBOX_PIDS: ${SANDBOX_PIDS:-256}
-      SANDBOX_DISK: ${SANDBOX_DISK:-2g}
+      SANDBOX_MEMORY: ${SANDBOX_MEMORY:-256m}
+      SANDBOX_PIDS: ${SANDBOX_PIDS:-64}
+      SANDBOX_DISK: ${SANDBOX_DISK:-64m}
       SANDBOX_EXEC_TIMEOUT_S: ${SANDBOX_EXEC_TIMEOUT_S:-120}
-    # Docker access, sandbox image build, volumes and networks: CP1-04 / ADR-0002.
+      SANDBOX_IMAGE: ${COMPOSE_PROJECT_NAME:-agent_harness}-sandbox:cp1
+      SANDBOX_PROJECT: ${COMPOSE_PROJECT_NAME:-agent_harness}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - runtime-auth:/run/runtime-auth
+    stop_grace_period: 45s
+    depends_on:
+      sandbox-image:
+        condition: service_completed_successfully
     healthcheck: *python-health
   llm-proxy:
-    build: ./services/llm-proxy
+    build:
+      context: .
+      dockerfile: services/llm-proxy/Dockerfile
+    init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [backend, llm-egress]
     environment:
       LLM_MODE: ${LLM_MODE:-replay}
       LLM_PROVIDER_URL: ${LLM_PROVIDER_URL:-}
       LLM_MODEL: ${LLM_MODEL:-}
       LLM_API_KEY: ${LLM_API_KEY:-}
     healthcheck: *python-health
+
+  sandbox-image:
+    image: ${COMPOSE_PROJECT_NAME:-agent_harness}-sandbox:cp1
+    build:
+      context: .
+      dockerfile: sandbox/Dockerfile
+    entrypoint: ["python", "-c", "pass"]
+    network_mode: none
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+
+volumes:
+  harness-results:
+  runtime-auth:
+
+networks:
+  llm-egress: {}
+  frontend: {}
+  backend:
+    internal: true

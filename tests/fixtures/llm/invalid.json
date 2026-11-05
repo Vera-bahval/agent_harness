@@ -1,0 +1,51 @@
+{
+  "turns": [
+    {
+      "reply": {
+        "role": "assistant",
+        "content": null,
+        "tool_calls": [
+          {
+            "id": "invalid",
+            "type": "function",
+            "function": {
+              "name": "ReadFile",
+              "arguments": "{\"path\": \"../outside\"}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "expect": {
+        "call_id": "invalid",
+        "status": "failed",
+        "error_code": "invalid_tool_path"
+      },
+      "reply": {
+        "role": "assistant",
+        "content": null,
+        "tool_calls": [
+          {
+            "id": "write_answer",
+            "type": "function",
+            "function": {
+              "name": "WriteFile",
+              "arguments": "{\"path\": \"answer.txt\", \"content\": \"8137\"}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "expect": {
+        "call_id": "write_answer",
+        "status": "success"
+      },
+      "reply": {
+        "role": "assistant",
+        "content": "Готово: порт записан в answer.txt."
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "pair": "replay-simple",
+  "mode": "replay",
+  "measurement": "smoke",
+  "total": 5,
+  "passed": 5,
+  "outcomes": {
+    "passed": 5
+  }
+}

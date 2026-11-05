@@ -1,0 +1,10 @@
+{
+  "pair": "replay-b1",
+  "mode": "replay",
+  "measurement": "smoke",
+  "total": 1,
+  "passed": 1,
+  "outcomes": {
+    "passed": 1
+  }
+}

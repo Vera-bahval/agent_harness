@@ -1,0 +1,8 @@
+id: B4.2
+baf: B4
+level: medium
+messages:
+- Переименуй calc_total в compute_total во всём проекте, включая импорты, вызовы и
+  README. Поведение и остальные части проекта сохрани; проверь тестами.
+answer_file: pricing.py
+timeout_s: 180

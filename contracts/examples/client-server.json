@@ -1,0 +1,214 @@
+[
+  {
+    "version": "v0",
+    "type": "connect",
+    "request_id": "req_connect",
+    "expires_at": 2000000000,
+    "timeout_s": 120
+  },
+  {
+    "version": "v0",
+    "type": "connected",
+    "request_id": "req_connect",
+    "server_epoch": "epoch_demo",
+    "limits": {
+      "max_timeout_s": 1800,
+      "request_window_s": 3600,
+      "event_retention_s": 3600,
+      "max_events": 10000
+    }
+  },
+  {
+    "version": "v0",
+    "type": "session.create",
+    "request_id": "req_session_create",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "workdir": {
+      "kind": "fixture",
+      "source_id": "B1_1",
+      "mode": "rw"
+    },
+    "pair_id": "replay"
+  },
+  {
+    "version": "v0",
+    "type": "session.created",
+    "request_id": "req_session_create",
+    "server_epoch": "epoch_demo",
+    "session_id": "sess_1"
+  },
+  {
+    "version": "v0",
+    "type": "run.start",
+    "request_id": "req_run_start",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "session_id": "sess_1",
+    "message": "Прочитай порт и запиши в answer.txt"
+  },
+  {
+    "version": "v0",
+    "type": "run.accepted",
+    "request_id": "req_run_start",
+    "server_epoch": "epoch_demo",
+    "session_id": "sess_1",
+    "run_id": "run_1",
+    "trace_id": "trace_1"
+  },
+  {
+    "version": "v0",
+    "type": "events.subscribe",
+    "request_id": "req_events_subscribe",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "session_id": "sess_1",
+    "after_event_id": 0
+  },
+  {
+    "version": "v0",
+    "type": "run.started",
+    "server_epoch": "epoch_demo",
+    "session_id": "sess_1",
+    "run_id": "run_1",
+    "trace_id": "trace_1",
+    "event_id": 1
+  },
+  {
+    "version": "v0",
+    "type": "tool.started",
+    "server_epoch": "epoch_demo",
+    "session_id": "sess_1",
+    "run_id": "run_1",
+    "trace_id": "trace_1",
+    "event_id": 2,
+    "operation_id": "op_1",
+    "name": "RunCommand"
+  },
+  {
+    "version": "v0",
+    "type": "tool.finished",
+    "server_epoch": "epoch_demo",
+    "session_id": "sess_1",
+    "run_id": "run_1",
+    "trace_id": "trace_1",
+    "event_id": 3,
+    "operation_id": "op_1",
+    "status": "success"
+  },
+  {
+    "version": "v0",
+    "type": "run.result",
+    "server_epoch": "epoch_demo",
+    "session_id": "sess_1",
+    "run_id": "run_1",
+    "trace_id": "trace_1",
+    "event_id": 4,
+    "result": {
+      "status": "completed",
+      "answer": "Порт записан в answer.txt",
+      "error": null,
+      "usage": {
+        "tokens_in": 100,
+        "tokens_out": 30
+      }
+    }
+  },
+  {
+    "version": "v0",
+    "type": "run.get",
+    "request_id": "req_run_get",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "session_id": "sess_1",
+    "run_id": "run_1"
+  },
+  {
+    "version": "v0",
+    "type": "run.state",
+    "request_id": "req_run_get",
+    "server_epoch": "epoch_demo",
+    "session_id": "sess_1",
+    "run_id": "run_1",
+    "state": "terminal",
+    "result": {
+      "status": "completed",
+      "answer": "Порт записан в answer.txt",
+      "error": null,
+      "usage": {
+        "tokens_in": 100,
+        "tokens_out": 30
+      }
+    }
+  },
+  {
+    "version": "v0",
+    "type": "run.cancel",
+    "request_id": "req_run_cancel",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "session_id": "sess_1",
+    "run_id": "run_1"
+  },
+  {
+    "version": "v0",
+    "type": "run.cancelled",
+    "request_id": "req_run_cancel",
+    "server_epoch": "epoch_demo",
+    "session_id": "sess_1",
+    "run_id": "run_1",
+    "status": "already_terminal"
+  },
+  {
+    "version": "v0",
+    "type": "session.collect",
+    "request_id": "req_session_collect",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "session_id": "sess_1"
+  },
+  {
+    "version": "v0",
+    "type": "session.collected",
+    "request_id": "req_session_collect",
+    "server_epoch": "epoch_demo",
+    "session_id": "sess_1",
+    "artifact_id": "artifact_1",
+    "size_bytes": 1024,
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+    "version": "v0",
+    "type": "session.close",
+    "request_id": "req_session_close",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "session_id": "sess_1"
+  },
+  {
+    "version": "v0",
+    "type": "session.closed",
+    "request_id": "req_session_close",
+    "server_epoch": "epoch_demo",
+    "session_id": "sess_1"
+  },
+  {
+    "version": "v0",
+    "type": "error",
+    "request_id": "req_bad",
+    "server_epoch": "epoch_demo",
+    "error": {
+      "class": "protocol_error",
+      "code": "conflict",
+      "message": "Operation already running",
+      "retry": "never"
+    }
+  }
+]

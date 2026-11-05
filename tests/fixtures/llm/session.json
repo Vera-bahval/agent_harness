@@ -1,0 +1,62 @@
+{
+  "turns": [
+    {
+      "reply": {
+        "role": "assistant",
+        "content": null,
+        "tool_calls": [
+          {
+            "id": "remember",
+            "type": "function",
+            "function": {
+              "name": "WriteFile",
+              "arguments": "{\"path\": \"memory.txt\", \"content\": \"persistent-42\"}"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "expect": {
+        "call_id": "remember",
+        "status": "success"
+      },
+      "reply": {
+        "role": "assistant",
+        "content": "Remembered persistent-42"
+      }
+    }
+  ],
+  "followup": {
+    "history_contains": "Remembered persistent-42",
+    "turns": [
+      {
+        "reply": {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "recall",
+              "type": "function",
+              "function": {
+                "name": "ReadFile",
+                "arguments": "{\"path\": \"memory.txt\"}"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "expect": {
+          "call_id": "recall",
+          "status": "success",
+          "text_contains": "persistent-42"
+        },
+        "reply": {
+          "role": "assistant",
+          "content": "Recalled persistent-42"
+        }
+      }
+    ]
+  }
+}

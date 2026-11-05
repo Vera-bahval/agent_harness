@@ -1,0 +1,1143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-harness:harness-sandbox:v0",
+  "title": "harness-sandbox protocol v0",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/connect"
+    },
+    {
+      "$ref": "#/$defs/connected"
+    },
+    {
+      "$ref": "#/$defs/error"
+    },
+    {
+      "$ref": "#/$defs/provision"
+    },
+    {
+      "$ref": "#/$defs/provisioned"
+    },
+    {
+      "$ref": "#/$defs/exec"
+    },
+    {
+      "$ref": "#/$defs/exec.accepted"
+    },
+    {
+      "$ref": "#/$defs/cancel"
+    },
+    {
+      "$ref": "#/$defs/cancel.accepted"
+    },
+    {
+      "$ref": "#/$defs/release"
+    },
+    {
+      "$ref": "#/$defs/released"
+    },
+    {
+      "$ref": "#/$defs/collect"
+    },
+    {
+      "$ref": "#/$defs/collected"
+    },
+    {
+      "$ref": "#/$defs/operation.get"
+    },
+    {
+      "$ref": "#/$defs/operation.state"
+    },
+    {
+      "$ref": "#/$defs/events.subscribe"
+    },
+    {
+      "$ref": "#/$defs/exec.output"
+    },
+    {
+      "$ref": "#/$defs/exec.result"
+    }
+  ],
+  "$defs": {
+    "error": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "error"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "error": {
+          "$ref": "#/$defs/error_detail"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "error"
+      ],
+      "additionalProperties": false
+    },
+    "workdir": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "fixture",
+            "mount"
+          ]
+        },
+        "source_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "mode": {
+          "enum": [
+            "ro",
+            "rw"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "source_id",
+        "mode"
+      ],
+      "additionalProperties": false
+    },
+    "usage": {
+      "type": "object",
+      "properties": {
+        "tokens_in": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tokens_out": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "tokens_in",
+        "tokens_out"
+      ],
+      "additionalProperties": false
+    },
+    "command": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "const": "RunCommand"
+            },
+            "argv": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 8192
+              },
+              "minItems": 1,
+              "maxItems": 128,
+              "prefixItems": [
+                {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 8192
+                }
+              ]
+            },
+            "cwd": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[\\\\\\u0000]).+$"
+            }
+          },
+          "required": [
+            "name",
+            "argv",
+            "cwd"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "const": "ReadFile"
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[\\\\\\u0000]).+$"
+            }
+          },
+          "required": [
+            "name",
+            "path"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "const": "WriteFile"
+            },
+            "path": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4096,
+              "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*[\\\\\\u0000]).+$"
+            },
+            "content_base64": {
+              "type": "string",
+              "maxLength": 1398104,
+              "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+            }
+          },
+          "required": [
+            "name",
+            "path",
+            "content_base64"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "operation_result": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "success",
+            "failed",
+            "cancelled",
+            "timed_out"
+          ]
+        },
+        "exit_code": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stdout": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "stderr": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "content_base64": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 1398104,
+              "pattern": "^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "truncated": {
+          "type": "boolean"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/error_detail"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "exit_code",
+        "stdout",
+        "stderr",
+        "content_base64",
+        "truncated",
+        "error"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "success"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "error": {
+                "type": "null"
+              },
+              "exit_code": {
+                "enum": [
+                  0,
+                  null
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "error": {
+                "$ref": "#/$defs/error_detail"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "connect": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "connect"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "expires_at",
+        "timeout_s"
+      ],
+      "additionalProperties": false
+    },
+    "connected": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "connected"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "max_timeout_s": {
+              "const": 1800
+            },
+            "request_window_s": {
+              "const": 3600
+            },
+            "event_retention_s": {
+              "const": 3600
+            },
+            "max_events": {
+              "const": 10000
+            }
+          },
+          "required": [
+            "max_timeout_s",
+            "request_window_s",
+            "event_retention_s",
+            "max_events"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "limits"
+      ],
+      "additionalProperties": false
+    },
+    "provision": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "provision"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "workdir": {
+          "$ref": "#/$defs/workdir"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "session_id",
+        "workdir"
+      ],
+      "additionalProperties": false
+    },
+    "provisioned": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "provisioned"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "session_id",
+        "sandbox_id"
+      ],
+      "additionalProperties": false
+    },
+    "exec": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "exec"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "command": {
+          "$ref": "#/$defs/command"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "sandbox_id",
+        "operation_id",
+        "command"
+      ],
+      "additionalProperties": false
+    },
+    "exec.accepted": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "exec.accepted"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "sandbox_id",
+        "operation_id"
+      ],
+      "additionalProperties": false
+    },
+    "cancel": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "cancel"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "sandbox_id",
+        "operation_id"
+      ],
+      "additionalProperties": false
+    },
+    "cancel.accepted": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "cancel.accepted"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "status": {
+          "enum": [
+            "cancelling",
+            "already_terminal"
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "sandbox_id",
+        "operation_id",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "release": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "release"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "sandbox_id"
+      ],
+      "additionalProperties": false
+    },
+    "released": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "released"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "sandbox_id"
+      ],
+      "additionalProperties": false
+    },
+    "collect": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "collect"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "sandbox_id"
+      ],
+      "additionalProperties": false
+    },
+    "collected": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "collected"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "artifact_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "sandbox_id",
+        "artifact_id",
+        "size_bytes",
+        "sha256"
+      ],
+      "additionalProperties": false
+    },
+    "operation.get": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "operation.get"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "sandbox_id",
+        "operation_id"
+      ],
+      "additionalProperties": false
+    },
+    "operation.state": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "operation.state"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "state": {
+          "enum": [
+            "running",
+            "cancelling",
+            "terminal"
+          ]
+        },
+        "result": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/operation_result"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "sandbox_id",
+        "operation_id",
+        "state",
+        "result"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "terminal"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "$ref": "#/$defs/operation_result"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "result": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "events.subscribe": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "events.subscribe"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "after_event_id": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "sandbox_id",
+        "after_event_id"
+      ],
+      "additionalProperties": false
+    },
+    "exec.output": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "exec.output"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "event_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "stream": {
+          "enum": [
+            "stdout",
+            "stderr"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "maxLength": 4096
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "server_epoch",
+        "sandbox_id",
+        "operation_id",
+        "event_id",
+        "stream",
+        "text"
+      ],
+      "additionalProperties": false
+    },
+    "exec.result": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "exec.result"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "sandbox_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "event_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "result": {
+          "$ref": "#/$defs/operation_result"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "server_epoch",
+        "sandbox_id",
+        "operation_id",
+        "event_id",
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "error_detail": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "enum": [
+            "protocol_error",
+            "command_error",
+            "timeout",
+            "sandbox_error",
+            "transport_error"
+          ]
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "retry": {
+          "enum": [
+            "never",
+            "query_status",
+            "same_request"
+          ]
+        }
+      },
+      "required": [
+        "class",
+        "code",
+        "message",
+        "retry"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

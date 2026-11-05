@@ -1,0 +1,8 @@
+id: B1.3
+baf: B1
+level: tricky
+messages:
+- Какой размер неустойки указан в договоре contract.md? Запиши его в answer.txt. Если
+  документ не содержит такого размера, запиши ровно НЕТ ДАННЫХ.
+answer_file: answer.txt
+timeout_s: 180

@@ -1,0 +1,10 @@
+{
+  "pair": "cp1-sol-low",
+  "mode": "real",
+  "measurement": "quality",
+  "total": 1,
+  "passed": 1,
+  "outcomes": {
+    "passed": 1
+  }
+}

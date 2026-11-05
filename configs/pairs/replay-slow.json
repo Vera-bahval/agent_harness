@@ -1,0 +1,11 @@
+{
+  "harness": "simple-v0",
+  "mode": "replay",
+  "model": "scripted-v0",
+  "max_steps": 10,
+  "timeout_s": 60,
+  "tool_timeout_s": 10,
+  "parameters": {},
+  "replay": "slow",
+  "id": "replay-slow"
+}

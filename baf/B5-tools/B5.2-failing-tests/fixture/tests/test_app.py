@@ -1,0 +1,44 @@
+import unittest
+from app import normalize
+
+class NormalizeTests(unittest.TestCase):
+    def test_00(self):
+        self.assertEqual(normalize(0), 0)
+    def test_01(self):
+        self.assertEqual(normalize(1), 1)
+    def test_02(self):
+        self.assertEqual(normalize(2), 2)
+    def test_03(self):
+        self.assertEqual(normalize(3), 3)
+    def test_04(self):
+        self.assertEqual(normalize(4), 4)
+    def test_05(self):
+        self.assertEqual(normalize(5), 5)
+    def test_06(self):
+        self.assertEqual(normalize(6), 6)
+    def test_07(self):
+        self.assertEqual(normalize(7), 7)
+    def test_08(self):
+        self.assertEqual(normalize(8), 8)
+    def test_09(self):
+        self.assertEqual(normalize(9), 9)
+    def test_10(self):
+        self.assertEqual(normalize(10), 10)
+    def test_11(self):
+        self.assertEqual(normalize(11), 11)
+    def test_12(self):
+        self.assertEqual(normalize(12), 12)
+    def test_13(self):
+        self.assertEqual(normalize(13), 13)
+    def test_14(self):
+        self.assertEqual(normalize(14), 14)
+    def test_15(self):
+        self.assertEqual(normalize(15), 15)
+    def test_16(self):
+        self.assertEqual(normalize(16), 16)
+    def test_17(self):
+        self.assertEqual(normalize(17), 17)
+    def test_18(self):
+        self.assertEqual(normalize(18), 18)
+    def test_19(self):
+        self.assertEqual(normalize(19), 19)

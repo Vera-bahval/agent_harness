@@ -1,0 +1,9 @@
+id: B5.2
+baf: B5
+level: medium
+messages:
+- Прогони тесты проекта командой python -m unittest discover -s tests -v и запиши
+  короткие имена упавших тестовых методов (например test_03), по одному на строку
+  в failed.txt. Файлы проекта не изменяй.
+answer_file: failed.txt
+timeout_s: 180

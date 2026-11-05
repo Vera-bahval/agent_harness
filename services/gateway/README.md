@@ -1,5 +1,5 @@
 # gateway
 
-Публичный API: токен, сессии, сообщения, события, cancel/reconnect. Не исполняет команды. Реализуется в CP1-03 и CP1-06.
+CP1-06: авторизованный API v0, владение сессиями, дедупликация, SSE/reconnect, cancel и collect. [Архитектура и ограничения](../../docs/client-gateway.md), [CLI](../../client/README.md).
 
-Исходники, Dockerfile и закреплённые зависимости появятся здесь. Сейчас это каталог-заготовка. План: [ЧП1](../../docs/checkpoint-1.md).
+CLIENT_TOKENS — JSON principal → token; пустая конфигурация отклоняет всех клиентов. Наружу публикуется только loopback-порт gateway.

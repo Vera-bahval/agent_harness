@@ -1,0 +1,283 @@
+{
+  "routes": {
+    "порт": {
+      "prompt_contains": "порт",
+      "turns": [
+        {
+          "reply": {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+              {
+                "id": "read_config",
+                "type": "function",
+                "function": {
+                  "name": "ReadFile",
+                  "arguments": "{\"path\": \"config/app.yaml\"}"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "expect": {
+            "call_id": "read_config",
+            "status": "success",
+            "text_contains": "port: 8137"
+          },
+          "reply": {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+              {
+                "id": "write_answer",
+                "type": "function",
+                "function": {
+                  "name": "WriteFile",
+                  "arguments": "{\"path\": \"answer.txt\", \"content\": \"8137\"}"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "expect": {
+            "call_id": "write_answer",
+            "status": "success"
+          },
+          "reply": {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+              {
+                "id": "verify_answer",
+                "type": "function",
+                "function": {
+                  "name": "RunCommand",
+                  "arguments": "{\"argv\": [\"cat\", \"answer.txt\"], \"cwd\": \".\"}"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "expect": {
+            "call_id": "verify_answer",
+            "status": "success",
+            "stdout": "8137"
+          },
+          "reply": {
+            "role": "assistant",
+            "content": "Готово: порт записан в answer.txt."
+          }
+        }
+      ]
+    },
+    "parse_date": {
+      "turns": [
+        {
+          "reply": {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+              {
+                "id": "search",
+                "type": "function",
+                "function": {
+                  "name": "RunCommand",
+                  "arguments": "{\"argv\": [\"grep\", \"-R\", \"-l\", \"^def parse_date\", \"app\"], \"cwd\": \".\"}"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "reply": {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+              {
+                "id": "answer",
+                "type": "function",
+                "function": {
+                  "name": "WriteFile",
+                  "arguments": "{\"path\": \"answer.txt\", \"content\": \"app/helpers/dates.py\"}"
+                }
+              }
+            ]
+          },
+          "expect": {
+            "call_id": "search",
+            "status": "success",
+            "stdout": "app/helpers/dates.py\n",
+            "exit_code": 0
+          }
+        },
+        {
+          "expect": {
+            "call_id": "answer",
+            "status": "success"
+          },
+          "reply": {
+            "role": "assistant",
+            "content": "Done."
+          }
+        }
+      ]
+    },
+    "config.json": {
+      "turns": [
+        {
+          "reply": {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+              {
+                "id": "spec",
+                "type": "function",
+                "function": {
+                  "name": "ReadFile",
+                  "arguments": "{\"path\": \"spec.md\"}"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "reply": {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+              {
+                "id": "config",
+                "type": "function",
+                "function": {
+                  "name": "WriteFile",
+                  "arguments": "{\"path\": \"config.json\", \"content\": \"{\\n  \\\"name\\\": \\\"agent-service\\\",\\n  \\\"port\\\": 8085,\\n  \\\"debug\\\": false,\\n  \\\"retries\\\": 3,\\n  \\\"environments\\\": [\\n    \\\"dev\\\",\\n    \\\"test\\\"\\n  ]\\n}\\n\"}"
+                }
+              }
+            ]
+          },
+          "expect": {
+            "call_id": "spec",
+            "status": "success",
+            "text_contains": "integer 8085"
+          }
+        },
+        {
+          "expect": {
+            "call_id": "config",
+            "status": "success"
+          },
+          "reply": {
+            "role": "assistant",
+            "content": "Done."
+          }
+        }
+      ]
+    },
+    "разделе install": {
+      "turns": [
+        {
+          "reply": {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+              {
+                "id": "readme",
+                "type": "function",
+                "function": {
+                  "name": "ReadFile",
+                  "arguments": "{\"path\": \"README.md\"}"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "reply": {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+              {
+                "id": "edit",
+                "type": "function",
+                "function": {
+                  "name": "WriteFile",
+                  "arguments": "{\"path\": \"README.md\", \"content\": \"# Sample client\\n\\nCurrent stable version: 1.2.\\n\\n## Install\\n\\nInstall the pinned package:\\n\\n```sh\\npip install example-client==1.3\\n```\\n\\n## Usage\\n\\nThe sample below was written for version 1.2.\\n\\n```python\\nprint(\\\"example-client 1.2\\\")\\n```\\n\"}"
+                }
+              }
+            ]
+          },
+          "expect": {
+            "call_id": "readme",
+            "status": "success",
+            "text_contains": "pip install example-client==1.2"
+          }
+        },
+        {
+          "expect": {
+            "call_id": "edit",
+            "status": "success"
+          },
+          "reply": {
+            "role": "assistant",
+            "content": "Done."
+          }
+        }
+      ]
+    },
+    "stats.py": {
+      "turns": [
+        {
+          "reply": {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+              {
+                "id": "stats",
+                "type": "function",
+                "function": {
+                  "name": "RunCommand",
+                  "arguments": "{\"argv\": [\"python\", \"stats.py\", \"data.csv\"], \"cwd\": \".\"}"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "reply": {
+            "role": "assistant",
+            "content": null,
+            "tool_calls": [
+              {
+                "id": "median",
+                "type": "function",
+                "function": {
+                  "name": "WriteFile",
+                  "arguments": "{\"path\": \"answer.txt\", \"content\": \"7\"}"
+                }
+              }
+            ]
+          },
+          "expect": {
+            "call_id": "stats",
+            "status": "success",
+            "stdout": "7.0\n",
+            "exit_code": 0
+          }
+        },
+        {
+          "expect": {
+            "call_id": "median",
+            "status": "success"
+          },
+          "reply": {
+            "role": "assistant",
+            "content": "Done."
+          }
+        }
+      ]
+    }
+  }
+}

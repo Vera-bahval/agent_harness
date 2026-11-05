@@ -1,0 +1,42 @@
+{
+  "task_id": "B3.1",
+  "repeat": 1,
+  "pass": true,
+  "reason": "ok",
+  "outcome": "passed",
+  "tokens_in": null,
+  "tokens_out": null,
+  "seconds": 1.712838,
+  "pair": "replay-cp1",
+  "pair_config": {
+    "harness": "simple-v0",
+    "mode": "replay",
+    "model": "scripted-v0",
+    "max_steps": 10,
+    "timeout_s": 60,
+    "tool_timeout_s": 10,
+    "parameters": {},
+    "replay": "full",
+    "id": "replay-cp1"
+  },
+  "mode": "replay",
+  "model_version": "scripted-v0",
+  "run_ids": [
+    "baa9d173f7eb40abb410980a9c58e5fa"
+  ],
+  "trace_ids": [
+    "5eea40699a8948ec87037b9e9012ad51"
+  ],
+  "trace_id": "5eea40699a8948ec87037b9e9012ad51",
+  "session_id": "251f28aa246e45c5bfb18d3690156953",
+  "fixture_sha256": "509e9ec176cd95eb9b42c7d1c7417f930f6372177041916bfc015cb8bcf65d4d",
+  "task_sha256": "20cb72e5814712a5a8f40b88a4ba564ae3ed60cbfe1cd3b31b530999d9e98054",
+  "checker_sha256": "b0b34a475b7185d056f5bcabc449ed532289d38ad4082f3ff96d8c8b2f2bb0de",
+  "checker_support_sha256": "8a8f4c4925a64350b73f241fe915ae30f40c5bbf1c8c6783aa2f98a86d140056",
+  "cleanup": "closed",
+  "git_revision": "3528248aa0d4305931f2caf09600aa3e0f221de4",
+  "git_dirty": true,
+  "measurement": "smoke-all",
+  "started_at": "2026-11-05T20:50:04.449999+00:00",
+  "artifact_sha256": "d53780734d6e0c1f6dc139ce78857ba36f309c03f8345c90a97a812a6a5c4235"
+}

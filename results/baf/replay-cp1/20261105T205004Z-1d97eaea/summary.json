@@ -1,0 +1,10 @@
+{
+  "pair": "replay-cp1",
+  "mode": "replay",
+  "measurement": "smoke-all",
+  "total": 15,
+  "passed": 15,
+  "outcomes": {
+    "passed": 15
+  }
+}

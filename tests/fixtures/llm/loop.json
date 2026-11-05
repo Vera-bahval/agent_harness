@@ -1,0 +1,21 @@
+{
+  "repeat": true,
+  "turns": [
+    {
+      "reply": {
+        "role": "assistant",
+        "content": null,
+        "tool_calls": [
+          {
+            "id": "loop",
+            "type": "function",
+            "function": {
+              "name": "RunCommand",
+              "arguments": "{\"argv\": [\"true\"], \"cwd\": \".\"}"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

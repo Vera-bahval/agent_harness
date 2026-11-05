@@ -1,0 +1,47 @@
+{
+  "task_id": "B4.3",
+  "repeat": 1,
+  "pass": true,
+  "reason": "ok",
+  "outcome": "passed",
+  "tokens_in": 2102,
+  "tokens_out": 277,
+  "seconds": 11.250062,
+  "pair": "cp1-sol-low",
+  "pair_config": {
+    "harness": "simple-v0",
+    "mode": "real",
+    "model": "gpt-6.1-sol",
+    "max_steps": 20,
+    "timeout_s": 180,
+    "tool_timeout_s": 60,
+    "parameters": {
+      "max_completion_tokens": 8192,
+      "reasoning_effort": "low",
+      "parallel_tool_calls": false
+    },
+    "replay": null,
+    "id": "cp1-sol-low",
+    "api": "responses"
+  },
+  "mode": "real",
+  "model_version": "gpt-6.1-sol",
+  "run_ids": [
+    "6d214b7503bf43a7aec009349b230774"
+  ],
+  "trace_ids": [
+    "5d9bebf92e1444f284614e561618ba3e"
+  ],
+  "trace_id": "5d9bebf92e1444f284614e561618ba3e",
+  "session_id": "1fa8d5c942c14e66a15553414058f4ae",
+  "fixture_sha256": "8235308e597dde2799cc4a26012c0f00a437cd6f5c94cc3100a6b10328576369",
+  "task_sha256": "c64f3f04e6d6b07afdb4204651f989e3a9fb90973a983130a4c7e2190ff38d01",
+  "checker_sha256": "b40dccc51adb9de9f2ff0b7a07a510ce2d965c8efbdf4545ff0882488d144f43",
+  "checker_support_sha256": "8a8f4c4925a64350b73f241fe915ae30f40c5bbf1c8c6783aa2f98a86d140056",
+  "cleanup": "closed",
+  "git_revision": "3528248aa0d4305931f2caf09600aa3e0f221de4",
+  "git_dirty": true,
+  "measurement": "quality",
+  "started_at": "2026-11-05T20:49:21.388478+00:00",
+  "artifact_sha256": "ce55e410207b054d8d4ce8b2298839d09d1ff665c472e0b9510076521bd221b5"
+}

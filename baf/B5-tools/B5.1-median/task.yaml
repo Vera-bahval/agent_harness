@@ -1,0 +1,8 @@
+id: B5.1
+baf: B5
+level: simple
+messages:
+- Запусти python stats.py data.csv и запиши только медиану в answer.txt. Не изменяй
+  stats.py и data.csv.
+answer_file: answer.txt
+timeout_s: 180

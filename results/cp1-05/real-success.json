@@ -1,0 +1,21 @@
+{
+  "run_id": "0674a81fb70146deb05db35d86b1b047",
+  "trace_id": "948994698eb44a2391ca8c3927e17dfe",
+  "session_id": "75b7c60454a9478db5db66c8c41de84f",
+  "pair_id": "first-real-pair",
+  "state": "terminal",
+  "result": {
+    "status": "completed",
+    "answer": "Готово.",
+    "error": null,
+    "usage": {
+      "tokens_in": 3345,
+      "tokens_out": 118
+    },
+    "model": "gpt-5.4-mini-2026-03-17",
+    "mode": "real",
+    "artifact_available": true,
+    "cleanup": "released",
+    "seconds": 10.336836
+  }
+}

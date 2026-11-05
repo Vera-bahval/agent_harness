@@ -1,0 +1,1150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:agent-harness:client-server:v0",
+  "title": "client-server protocol v0",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/connect"
+    },
+    {
+      "$ref": "#/$defs/connected"
+    },
+    {
+      "$ref": "#/$defs/error"
+    },
+    {
+      "$ref": "#/$defs/session.create"
+    },
+    {
+      "$ref": "#/$defs/session.created"
+    },
+    {
+      "$ref": "#/$defs/run.start"
+    },
+    {
+      "$ref": "#/$defs/run.accepted"
+    },
+    {
+      "$ref": "#/$defs/run.cancel"
+    },
+    {
+      "$ref": "#/$defs/run.cancelled"
+    },
+    {
+      "$ref": "#/$defs/session.close"
+    },
+    {
+      "$ref": "#/$defs/session.closed"
+    },
+    {
+      "$ref": "#/$defs/run.get"
+    },
+    {
+      "$ref": "#/$defs/run.state"
+    },
+    {
+      "$ref": "#/$defs/events.subscribe"
+    },
+    {
+      "$ref": "#/$defs/run.started"
+    },
+    {
+      "$ref": "#/$defs/tool.started"
+    },
+    {
+      "$ref": "#/$defs/tool.finished"
+    },
+    {
+      "$ref": "#/$defs/run.result"
+    },
+    {
+      "$ref": "#/$defs/session.collect"
+    },
+    {
+      "$ref": "#/$defs/session.collected"
+    }
+  ],
+  "$defs": {
+    "error": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "error"
+        },
+        "request_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "error": {
+          "$ref": "#/$defs/error_detail"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "error"
+      ],
+      "additionalProperties": false
+    },
+    "workdir": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "fixture",
+            "mount"
+          ]
+        },
+        "source_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "mode": {
+          "enum": [
+            "ro",
+            "rw"
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "source_id",
+        "mode"
+      ],
+      "additionalProperties": false
+    },
+    "usage": {
+      "type": "object",
+      "properties": {
+        "tokens_in": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tokens_out": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "tokens_in",
+        "tokens_out"
+      ],
+      "additionalProperties": false
+    },
+    "run_result": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "completed",
+            "failed",
+            "cancelled",
+            "timed_out"
+          ]
+        },
+        "answer": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/error_detail"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "usage": {
+          "$ref": "#/$defs/usage"
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 200
+        },
+        "mode": {
+          "enum": [
+            "replay",
+            "real"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "answer",
+        "error",
+        "usage"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "completed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "error": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "error": {
+                "$ref": "#/$defs/error_detail"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "connect": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "connect"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "expires_at",
+        "timeout_s"
+      ],
+      "additionalProperties": false
+    },
+    "connected": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "connected"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "max_timeout_s": {
+              "const": 1800
+            },
+            "request_window_s": {
+              "const": 3600
+            },
+            "event_retention_s": {
+              "const": 3600
+            },
+            "max_events": {
+              "const": 10000
+            }
+          },
+          "required": [
+            "max_timeout_s",
+            "request_window_s",
+            "event_retention_s",
+            "max_events"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "limits"
+      ],
+      "additionalProperties": false
+    },
+    "session.create": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "session.create"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "workdir": {
+          "$ref": "#/$defs/workdir"
+        },
+        "pair_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "workdir",
+        "pair_id"
+      ],
+      "additionalProperties": false
+    },
+    "session.created": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "session.created"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "pair_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "session_id"
+      ],
+      "additionalProperties": false
+    },
+    "run.start": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "run.start"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 65536
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "session_id",
+        "message"
+      ],
+      "additionalProperties": false
+    },
+    "run.accepted": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "run.accepted"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "trace_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "session_id",
+        "run_id",
+        "trace_id"
+      ],
+      "additionalProperties": false
+    },
+    "run.cancel": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "run.cancel"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "session_id",
+        "run_id"
+      ],
+      "additionalProperties": false
+    },
+    "run.cancelled": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "run.cancelled"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "status": {
+          "enum": [
+            "cancelling",
+            "already_terminal"
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "session_id",
+        "run_id",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "session.close": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "session.close"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "session_id"
+      ],
+      "additionalProperties": false
+    },
+    "session.closed": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "session.closed"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "session_id"
+      ],
+      "additionalProperties": false
+    },
+    "run.get": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "run.get"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "session_id",
+        "run_id"
+      ],
+      "additionalProperties": false
+    },
+    "run.state": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "run.state"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "state": {
+          "enum": [
+            "queued",
+            "running",
+            "cancelling",
+            "terminal"
+          ]
+        },
+        "result": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/run_result"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "session_id",
+        "run_id",
+        "state",
+        "result"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "terminal"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "result": {
+                "$ref": "#/$defs/run_result"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "result": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "events.subscribe": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "events.subscribe"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "after_event_id": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "session_id",
+        "after_event_id"
+      ],
+      "additionalProperties": false
+    },
+    "run.started": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "run.started"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "trace_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "event_id": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "server_epoch",
+        "session_id",
+        "run_id",
+        "trace_id",
+        "event_id"
+      ],
+      "additionalProperties": false
+    },
+    "tool.started": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "tool.started"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "trace_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "event_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "name": {
+          "enum": [
+            "RunCommand",
+            "ReadFile",
+            "WriteFile"
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "server_epoch",
+        "session_id",
+        "run_id",
+        "trace_id",
+        "event_id",
+        "operation_id",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "tool.finished": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "tool.finished"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "trace_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "event_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "operation_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "status": {
+          "enum": [
+            "success",
+            "failed",
+            "cancelled",
+            "timed_out"
+          ]
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "server_epoch",
+        "session_id",
+        "run_id",
+        "trace_id",
+        "event_id",
+        "operation_id",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "run.result": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "run.result"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "run_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "trace_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "event_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "result": {
+          "$ref": "#/$defs/run_result"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "server_epoch",
+        "session_id",
+        "run_id",
+        "trace_id",
+        "event_id",
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "session.collect": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "session.collect"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "expires_at": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeout_s": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1800
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "expires_at",
+        "timeout_s",
+        "session_id"
+      ],
+      "additionalProperties": false
+    },
+    "session.collected": {
+      "type": "object",
+      "properties": {
+        "version": {
+          "const": "v0"
+        },
+        "type": {
+          "const": "session.collected"
+        },
+        "request_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "server_epoch": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "artifact_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "session_id": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        }
+      },
+      "required": [
+        "version",
+        "type",
+        "request_id",
+        "server_epoch",
+        "artifact_id",
+        "size_bytes",
+        "sha256",
+        "session_id"
+      ],
+      "additionalProperties": false
+    },
+    "error_detail": {
+      "type": "object",
+      "properties": {
+        "class": {
+          "enum": [
+            "protocol_error",
+            "command_error",
+            "timeout",
+            "sandbox_error",
+            "transport_error"
+          ]
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9_-]{1,80}$"
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 65536
+        },
+        "retry": {
+          "enum": [
+            "never",
+            "query_status",
+            "same_request"
+          ]
+        }
+      },
+      "required": [
+        "class",
+        "code",
+        "message",
+        "retry"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

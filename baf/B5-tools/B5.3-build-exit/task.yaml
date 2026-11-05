@@ -1,0 +1,8 @@
+id: B5.3
+baf: B5
+level: tricky
+messages:
+- Успешно ли отрабатывает build.sh? Запусти sh build.sh. Запиши yes или no на первой
+  строке answer.txt, затем причину из stderr. Файлы проекта не изменяй.
+answer_file: answer.txt
+timeout_s: 180

@@ -1,0 +1,10 @@
+{
+  "pair": "first-real-pair",
+  "mode": "real",
+  "measurement": "quality",
+  "total": 5,
+  "passed": 5,
+  "outcomes": {
+    "passed": 5
+  }
+}

@@ -1,0 +1,8 @@
+id: B2.3
+baf: B2
+level: tricky
+messages:
+- Где определена функция parse_date, которая парсит даты ISO 8601 с таймзоной и сохраняет
+  смещение? Запиши только относительный путь в answer.txt.
+answer_file: answer.txt
+timeout_s: 180

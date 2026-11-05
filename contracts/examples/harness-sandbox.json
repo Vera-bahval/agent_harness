@@ -1,0 +1,200 @@
+[
+  {
+    "version": "v0",
+    "type": "connect",
+    "request_id": "req_connect",
+    "expires_at": 2000000000,
+    "timeout_s": 120
+  },
+  {
+    "version": "v0",
+    "type": "connected",
+    "request_id": "req_connect",
+    "server_epoch": "epoch_demo",
+    "limits": {
+      "max_timeout_s": 1800,
+      "request_window_s": 3600,
+      "event_retention_s": 3600,
+      "max_events": 10000
+    }
+  },
+  {
+    "version": "v0",
+    "type": "provision",
+    "request_id": "req_provision",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "session_id": "sess_1",
+    "workdir": {
+      "kind": "fixture",
+      "source_id": "B1_1",
+      "mode": "rw"
+    }
+  },
+  {
+    "version": "v0",
+    "type": "provisioned",
+    "request_id": "req_provision",
+    "server_epoch": "epoch_demo",
+    "session_id": "sess_1",
+    "sandbox_id": "box_1"
+  },
+  {
+    "version": "v0",
+    "type": "exec",
+    "request_id": "req_exec",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "sandbox_id": "box_1",
+    "operation_id": "op_1",
+    "command": {
+      "name": "RunCommand",
+      "argv": [
+        "cat",
+        "config/app.yaml"
+      ],
+      "cwd": "."
+    }
+  },
+  {
+    "version": "v0",
+    "type": "exec.accepted",
+    "request_id": "req_exec",
+    "server_epoch": "epoch_demo",
+    "sandbox_id": "box_1",
+    "operation_id": "op_1"
+  },
+  {
+    "version": "v0",
+    "type": "events.subscribe",
+    "request_id": "req_events_subscribe",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "sandbox_id": "box_1",
+    "after_event_id": 0
+  },
+  {
+    "version": "v0",
+    "type": "exec.output",
+    "server_epoch": "epoch_demo",
+    "sandbox_id": "box_1",
+    "operation_id": "op_1",
+    "event_id": 1,
+    "stream": "stdout",
+    "text": "service:\n  listen:\n    port: 8137\n"
+  },
+  {
+    "version": "v0",
+    "type": "exec.result",
+    "server_epoch": "epoch_demo",
+    "sandbox_id": "box_1",
+    "operation_id": "op_1",
+    "event_id": 2,
+    "result": {
+      "status": "success",
+      "exit_code": 0,
+      "stdout": "service:\n  listen:\n    port: 8137\n",
+      "stderr": "",
+      "content_base64": null,
+      "truncated": false,
+      "error": null
+    }
+  },
+  {
+    "version": "v0",
+    "type": "operation.get",
+    "request_id": "req_operation_get",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "sandbox_id": "box_1",
+    "operation_id": "op_1"
+  },
+  {
+    "version": "v0",
+    "type": "operation.state",
+    "request_id": "req_operation_get",
+    "server_epoch": "epoch_demo",
+    "sandbox_id": "box_1",
+    "operation_id": "op_1",
+    "state": "terminal",
+    "result": {
+      "status": "success",
+      "exit_code": 0,
+      "stdout": "service:\n  listen:\n    port: 8137\n",
+      "stderr": "",
+      "content_base64": null,
+      "truncated": false,
+      "error": null
+    }
+  },
+  {
+    "version": "v0",
+    "type": "cancel",
+    "request_id": "req_cancel",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "sandbox_id": "box_1",
+    "operation_id": "op_1"
+  },
+  {
+    "version": "v0",
+    "type": "cancel.accepted",
+    "request_id": "req_cancel",
+    "server_epoch": "epoch_demo",
+    "sandbox_id": "box_1",
+    "operation_id": "op_1",
+    "status": "already_terminal"
+  },
+  {
+    "version": "v0",
+    "type": "collect",
+    "request_id": "req_collect",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "sandbox_id": "box_1"
+  },
+  {
+    "version": "v0",
+    "type": "collected",
+    "request_id": "req_collect",
+    "server_epoch": "epoch_demo",
+    "sandbox_id": "box_1",
+    "artifact_id": "artifact_1",
+    "size_bytes": 1024,
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  {
+    "version": "v0",
+    "type": "release",
+    "request_id": "req_release",
+    "server_epoch": "epoch_demo",
+    "expires_at": 2000000000,
+    "timeout_s": 120,
+    "sandbox_id": "box_1"
+  },
+  {
+    "version": "v0",
+    "type": "released",
+    "request_id": "req_release",
+    "server_epoch": "epoch_demo",
+    "sandbox_id": "box_1"
+  },
+  {
+    "version": "v0",
+    "type": "error",
+    "request_id": "req_bad",
+    "server_epoch": "epoch_demo",
+    "error": {
+      "class": "protocol_error",
+      "code": "conflict",
+      "message": "Operation already running",
+      "retry": "never"
+    }
+  }
+]

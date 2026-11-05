@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "project": "cp1_clean_772f625786",
+  "snapshot_sha256": "259262aaf10e9da4b3581cdb3c17193e1244bf11a22412e8135ecdd13e5a7db7",
+  "files": 386,
+  "source": "local working-tree snapshot, not remote clone",
+  "commands": [
+    [
+      "docker",
+      "compose",
+      "up",
+      "--build",
+      "-d",
+      "--wait",
+      "--wait-timeout",
+      "90"
+    ],
+    [
+      "/home/vera_bahval/agent_harness/.venv/bin/python",
+      "-m",
+      "client.cli",
+      "--url",
+      "http://127.0.0.1:54399",
+      "run",
+      "\u041d\u0430 \u043a\u0430\u043a\u043e\u043c \u043f\u043e\u0440\u0442\u0443 \u0441\u043b\u0443\u0448\u0430\u0435\u0442 \u0441\u0435\u0440\u0432\u0438\u0441? \u0417\u0430\u043f\u0438\u0448\u0438 \u0447\u0438\u0441\u043b\u043e \u0432 answer.txt.",
+      "--pair",
+      "replay-b1"
+    ],
+    [
+      "/home/vera_bahval/agent_harness/.venv/bin/python",
+      "-m",
+      "baf.runner",
+      "--url",
+      "http://127.0.0.1:54399",
+      "--pair",
+      "replay-cp1",
+      "--tasks",
+      "all",
+      "--mode",
+      "smoke-all"
+    ],
+    [
+      "docker",
+      "compose",
+      "down",
+      "-v",
+      "--remove-orphans"
+    ],
+    [
+      "docker",
+      "compose",
+      "down",
+      "-v",
+      "--remove-orphans"
+    ]
+  ]
+}

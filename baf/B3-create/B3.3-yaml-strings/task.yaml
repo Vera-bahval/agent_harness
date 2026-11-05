@@ -1,0 +1,8 @@
+id: B3.3
+baf: B3
+level: tricky
+messages:
+- Создай countries.yaml и postal.yaml из таблиц в task.md. Все значения должны оставаться
+  строками при чтении YAML, включая NO, ON, no, on и 0123.
+answer_file: countries.yaml
+timeout_s: 180

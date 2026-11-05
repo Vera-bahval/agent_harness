@@ -1,0 +1,20 @@
+{
+  "command": "make test-ci",
+  "status": "passed",
+  "recorded_at": "2026-11-05",
+  "tests": {
+    "unit": 32,
+    "contracts": 12,
+    "http_sse": 8,
+    "sandbox": 18,
+    "harness": 8,
+    "client": 3
+  },
+  "server_smoke": "passed",
+  "replay": {
+    "total": 15,
+    "passed": 15,
+    "path": "results/baf/replay-cp1/20261105T205004Z-1d97eaea"
+  },
+  "note": "Observed local command result; GitHub Actions has not run yet."
+}
